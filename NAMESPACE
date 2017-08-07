@@ -2,3 +2,4 @@
 
 export(predictStack)
 export(trainStack)
+export(trainStackNoRestack)

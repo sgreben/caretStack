@@ -4,10 +4,10 @@
 \alias{predictStack}
 \title{Predict using a stacked model}
 \usage{
-predictStack(model, x, verbose = F)
+predictStack(stackModel, x, verbose = F)
 }
 \arguments{
-\item{model}{Result of running trainStack}
+\item{stackModel}{Result of running trainStack}
 
 \item{x}{Predictors}
 }

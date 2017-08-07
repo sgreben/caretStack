@@ -2,7 +2,7 @@ library(caret)
 library(doParallel)
 
 trainStack.outOfFoldPredictions <- function(specs, folds, x, y, verbose = F) {
-  predictions = list()
+  predictions = list()$models
   for (j in names(specs)) {
     predictions[[j]] <- y
   }
@@ -123,6 +123,34 @@ trainStack <- function(x, y, layers, folds, verbose = F) {
       modelColumnName <- paste("Stack.L", i, "M", j, sep = ".")
       currentX[,modelColumnName] <- oofResults$predictions[[j]]
     }
+  }
+  return(layerResults)
+}
+
+#' Train a stacked model using caret, without restacking
+#'
+#' @param x Predictors
+#' @param y Response
+#' @param layers Stack layers. A list of lists of models.
+#' @param folds CV folds, as created by caret::createFolds
+#' @param verbose Output progress messages
+#' @export
+trainStackNoRestack <- function(x, y, layers, folds, verbose = F) {
+  currentX <- x
+  layerResults <- list()
+  for (i in 1:length(layers)) {
+    if (verbose) print(paste("layer", i))
+    layerSpecs <- layers[[i]]
+    oofResults <- trainStack.outOfFoldPredictions(layerSpecs, folds, currentX, y, verbose = verbose)
+    layerResults[[i]] <- oofResults
+    previousLayerColumns <- names(currentX)
+    for (j in names(layerSpecs)) {
+      if (verbose) print(paste("Summary for", j))
+      if (verbose) print(unlist(lapply(oofResults$scores[[j]], function(x) x[1])))
+      modelColumnName <- paste("Stack.L", i, "M", j, sep = ".")
+      currentX[,modelColumnName] <- oofResults$predictions[[j]]
+    }
+    currentX <- currentX[,!(names(currentX) %in% previousLayerColumns)]
   }
   return(layerResults)
 }
