@@ -17,6 +17,14 @@ devtools::install_github("sgreben/caretStack")
 
 ## Usage
 
+```R
+# Train
+model <- caretStack::trainStack(x, y, layers, folds, verbose = T)
+
+# Predict
+yHat <- caretStack::predictStack(model, x)
+``` 
+
 The structure of a layers spec is as follows:
 
 ```R
