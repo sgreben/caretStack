@@ -21,6 +21,9 @@ devtools::install_github("sgreben/caretStack")
 # Train
 model <- caretStack::trainStack(x, y, layers, folds, verbose = T)
 
+# Train (without re-stacking)
+modlel2 <- caretStack::trainStackNoRestack(x, y, layers, folds, verbose = T)
+
 # Predict
 yHat <- caretStack::predictStack(model, x)
 ``` 
