@@ -34,6 +34,7 @@ trainStack.outOfFoldPredictions <- function(specs, folds, x, y, verbose = F) {
     }
   }
   for (j in names(specs)) {
+    spec <- specs[[j]]
     print(paste("Fitting", j, "on entire dataset"))
     trainArgs <- c(list(x = x, y = y), spec$params)
     if (is.null(spec$parallel)) {
