@@ -116,6 +116,9 @@ trainStack <- function(x, y, layers, folds, verbose = F) {
   for (i in 1:length(layers)) {
     if (verbose) print(paste("layer", i))
     layerSpecs <- layers[[i]]
+    if (i == length(layers)) {
+      folds <- list()
+    }
     oofResults <- trainStack.outOfFoldPredictions(layerSpecs, folds, currentX, y, verbose = verbose)
     layerResults[[i]] <- oofResults
     for (j in names(layerSpecs)) {
@@ -142,6 +145,9 @@ trainStackNoRestack <- function(x, y, layers, folds, verbose = F) {
   for (i in 1:length(layers)) {
     if (verbose) print(paste("layer", i))
     layerSpecs <- layers[[i]]
+    if (i == length(layers)) {
+      folds <- list()
+    }
     oofResults <- trainStack.outOfFoldPredictions(layerSpecs, folds, currentX, y, verbose = verbose)
     layerResults[[i]] <- oofResults
     previousLayerColumns <- names(currentX)
